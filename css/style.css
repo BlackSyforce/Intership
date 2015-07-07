@@ -28,6 +28,15 @@
 	text-align: center;
 	cursor: pointer;
 }
+.user-list .firstName{
+	cursor: pointer;
+}
+.user-list .lastName{
+	cursor: pointer;
+}
+.user-list .cityName{
+	cursor: pointer;
+}
 
 .user-form {
 	background: #EEE;

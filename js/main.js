@@ -12,6 +12,8 @@ $(function() {
 		lastName: "Prejmerean",
 		city: "Laponia"
 	}];
+	var editMode = false;
+	var editIndex;
 
 	function renderTable() {
 		var $template = $("<tr><td></td><td></td><td></td><td class='action'>X</td></tr>");
@@ -62,24 +64,57 @@ $(function() {
 
 		$("#addUser").on("click", function() {
 			showForm();
+			editMode = false;
 		});
 
-		$("#saveUser").on("click", function() {
-			var $items = $(".user-form input[type='text']");
-			var obj = {
-				firstName: $($items[0]).val(),
-				lastName: $($items[1]).val(),
-				city: $($items[2]).val()
-			};
+		$("#saveUser").on('click', function() {
+			if (editMode){
+				var $items = $(".user-form input[type='text']");
+				var objNew = {
+					firstName: $($items[0]).val(),
+					lastName: $($items[1]).val(),
+					city: $($items[2]).val()
+				};
 
-			addUser(obj);
-			hideForm();
-			clearForm();
+				userList[editIndex].firstName = objNew.firstName;
+				userList[editIndex].lastName = objNew.lastName;
+				userList[editIndex].city = objNew.city;
+					
+				clearTable();
+				renderTable();
+				console.log('updating');
+				hideForm();
+				clearForm();
+			} else {
+				var $items = $(".user-form input[type='text']");
+				var obj = {
+					firstName: $($items[0]).val(),
+					lastName: $($items[1]).val(),
+					city: $($items[2]).val()
+				};
+
+				console.log('adding');
+				addUser(obj);
+				hideForm();
+				clearForm();
+			}
 		});
 
 		$("#cancelUser").on("click", function() {
 			hideForm();
 			clearForm();
+		});
+
+		$('.user-list').on('click', 'tr', function() {
+			showForm();
+			console.log('here');
+			editIndex = $(this).index();
+			var $oldData = $(this).find('td');
+			var $newData = $(".user-form input[type='text']");
+			for (var i = 0; i < $newData.length; i++) {
+				$($newData[i]).val($($oldData[i]).text());
+			}
+			editMode = true;
 		});
 	}
 

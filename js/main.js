@@ -14,7 +14,7 @@ $(function() {
 	}];
 
 	function renderTable() {
-		var $template = $("<tr><td></td><td></td><td></td><td class='action'>X</td></tr>");
+		var $template = $("<tr><td class='firstName'></td><td class='lastName'></td><td class='city'></td><td class='action'>X</td></tr>");
 		var $body = $(".user-list tbody");
 
 		for (var i = 0; i < userList.length; i++) {
@@ -42,6 +42,7 @@ $(function() {
 		clearTable();
 		renderTable();
 	}
+
 
 	function showForm() {
 		$(".user-form").removeClass("hidden");
@@ -81,7 +82,21 @@ $(function() {
 			hideForm();
 			clearForm();
 		});
+
+		$(".user-list tr").on("click", ".firstName", function() {
+            var index = $(this).parent().index();
+            var user = userList[index];
+            var $items = $(".user-form input[type='text']");
+            $($items[0]).val(user.firstName);
+            $($items[1]).val(user.lastName);
+            $($items[2]).val(user.city);
+            showForm();
+		});
+
+		
+
 	}
+
 
 	renderTable();
 	addEvents();

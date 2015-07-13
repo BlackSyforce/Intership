@@ -1,3 +1,7 @@
+.user-list {
+	display: inline-block;
+}
+
 .user-list td {
 	padding: 10px;
 	border-left: 1px solid #000;
@@ -66,4 +70,28 @@
 input[type="button"] {
 	display: block;
 	margin-top: 10px;
+}
+
+.sorting {
+	display: inline-block;
+}
+
+.sorting input[type=button] {
+	display: inline-block;
+}
+
+.sorting {
+	display: inline-block;
+	margin: 0 20px;
+	background: #b3b3b3;
+	padding: 10px;
+	border-radius: 15px;
+}
+
+.criteria p {
+	margin-top: 0;
+}
+
+#first, #last, #city {
+	cursor: pointer;
 }

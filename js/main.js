@@ -1,17 +1,6 @@
 $(function() {
-	var userList = [{
-		firstName: "Ion",
-		lastName: "Gheorghe",
-		city: "Iasi"
-	}, {
-		firstName: "Tudor",
-		lastName: "Prejmerean",
-		city: "Laponia"
-	}, {
-		firstName: "Alex",
-		lastName: "Prejmerean",
-		city: "Laponia"
-	}];
+	var editIndex;
+	var userList = [];
 
 	function renderTable() {
 		var $template = $("<tr><td class='firstName'></td>" +
@@ -63,61 +52,136 @@ $(function() {
 			clearTable();
 			renderTable();
 		});
+		$("#saveUser").on("click", function() {
+			if (addMode == false){
+
+				$.ajax({
+					method: 'POST',
+					url: 'http://localhost:4000/users'
+				}).done(function(users){
+					user: '{"firstName": "' + $(".user-form input[name='firstName']").val() + 
+					',"lastName" : ' + $(".user-form input[name='lastName']").val() +
+					',"city" : '+ $(".user-form input[name='cityName']").val()+'}'
+				});
+			clearTable();
+			renderTable();
+			hideForm();
+			clearForm();
+				
+			};
+		});
 
 		$(".user-list").on("click", ".firstName", function(){
 			addMode = false;
 			console.log(addMode);
-			var index = $(this).parent().index();
+			editIndex = $(this).parent().index();
 			showForm();
-			$(".user-form input[name='firstName']").val(userList[index].firstName);
-			$(".user-form input[name='lastName']").val(userList[index].lastName);
-			$(".user-form input[name='cityName']").val(userList[index].city);
+			$(".user-form input[name='firstName']").val(userList[editIndex].firstName);
+			$(".user-form input[name='lastName']").val(userList[editIndex].lastName);
+			$(".user-form input[name='cityName']").val(userList[editIndex].city);
 			$("#saveUser").on("click", function() {
-				userList[index].firstName= $(".user-form input[name='firstName']").val();
-				userList[index].lastName= $(".user-form input[name='lastName']").val();
-				userList[index].city= $(".user-form input[name='cityName']").val();
-				clearTable();
-				renderTable();
-				addMode = true;
+			console.log('1')
+				
+				
 			});
 		});
  	
 		$(".user-list").on("click", ".lastName", function(){
 			addMode = false;
-			var index = $(this).parent().index();
-			console.log(userList[index].lastName);
+			editIndex = $(this).parent().index();
+			$(".user-form input[name='firstName']").val(userList[editIndex].firstName);
+			$(".user-form input[name='lastName']").val(userList[editIndex].lastName);
+			$(".user-form input[name='cityName']").val(userList[editIndex].city);
+			console.log(userList[editIndex].lastName);
 			showForm();
-			$("#saveUser").on("click", function() {
-					userList[index].firstName= $(".user-form input[name='firstName']").val();
-					userList[index].lastName= $(".user-form input[name='lastName']").val();
-					userList[index].city= $(".user-form input[name='cityName']").val();
-					clearTable();
-				renderTable();
-				addMode = true;
-				});
+			
 		});
 
-			$(".user-list").on("click", ".cityName", function(){
-				addMode = false;
-				var index = $(this).parent().index();
-				console.log(userList[index].city);
-				showForm();
-				$("#saveUser").on("click", function() {
-					userList[index].firstName= $(".user-form input[name='firstName']").val();
-					userList[index].lastName= $(".user-form input[name='lastName']").val();
-					userList[index].city= $(".user-form input[name='cityName']").val();
-					clearTable();
-				renderTable();
-				addMode = true;
-				});
-			});
+		$(".user-list").on("click", ".cityName", function(){
+			addMode = false;
+			editIndex = $(this).parent().index();
+			$(".user-form input[name='firstName']").val(userList[editIndex].firstName);
+			$(".user-form input[name='lastName']").val(userList[editIndex].lastName);
+			$(".user-form input[name='cityName']").val(userList[editIndex].city);
+			console.log(userList[editIndex].city);
+			showForm();
+			
+		});
+
+		$(".user-list").on("click", "#fN", function(){
+			console.log('Trigger')
+			for (var i=0;i<userList.length-1;i++){
+				for(var j=i+1;j<userList.length;j++){
+					console.log(i,j);
+					if (userList[j].firstName<userList[i].firstName){
+						var aux = {
+							firstName: userList[j].firstName,
+							lastName: userList[j].lastName,
+							city: userList[j].city
+						}
+
+						userList[j]=userList[i];
+						userList[i]=aux;
+						clearTable();
+						renderTable();
+
+					}
+				}
+			}
+		});
+
+		$(".user-list").on("click", "#lN", function(){
+			console.log('Trigger')
+			for (var i=0;i<userList.length-1;i++){
+				for(var j=i+1;j<userList.length;j++){
+					console.log(i,j);
+					if (userList[j].lastName<userList[i].lastName){
+						var aux = {
+							firstName: userList[j].firstName,
+							lastName: userList[j].lastName,
+							city: userList[j].city
+						}
+
+						userList[j]=userList[i];
+						userList[i]=aux;
+						clearTable();
+						renderTable();
+
+					}
+				}
+			}
+		});
+
+		$(".user-list").on("click", "#cN", function(){
+			console.log('Trigger')
+			for (var i=0;i<userList.length-1;i++){
+				for(var j=i+1;j<userList.length;j++){
+					console.log(i,j);
+					if (userList[j].city<userList[i].city){
+						var aux = {
+							firstName: userList[j].firstName,
+							lastName: userList[j].lastName,
+							city: userList[j].city
+						}
+
+						userList[j]=userList[i];
+						userList[i]=aux;
+						clearTable();
+						renderTable();
+
+					}
+				}
+			}
+		});
 
 		$("#addUser").on("click", function() {
 			showForm();
+			clearForm();
+			addMode=true;
 		});
 
 		$("#saveUser").on("click", function() {
-			console.log(addMode);
+			
 			if (addMode == true) {
 			    console.log(addMode);
 				var $items = $(".user-form input[type='text']");
@@ -125,20 +189,31 @@ $(function() {
 					firstName: $($items[0]).val(),
 					lastName: $($items[1]).val(),
 					city: $($items[2]).val()
-					}
+			}
 
 			addUser(obj);
 			hideForm();
 			clearForm();
-		};
-	});
+			};
+		});
 
 		$("#cancelUser").on("click", function() {
 			hideForm();
 			clearForm();
 		});
+
 	}
 
 	renderTable();
 	addEvents();
+	$.ajax({
+		method: 'GET',
+		url: 'http://localhost:4000/users'
+	}).done(function(users){
+		userList = users;
+		clearTable();
+		renderTable();
+	});
+
+
 });

@@ -18,7 +18,9 @@
 	background: #EEE;
 	padding: 5px;
 }
-
+.user-list th:not(:last-child){
+	cursor:pointer;
+}
 .user-list th:last-child {
 	border-right: 1px solid #000;
 }
